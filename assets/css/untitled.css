@@ -1,0 +1,19 @@
+input:focus, select:focus, textarea:focus {
+  border-color: #8F87F1 !important;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  text-align: center;
+  width: 211px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #8F87F1 !important;
+  box-shadow: 0 0 0 0.2rem rgba(143, 135, 241, 0.25) !important;
+}
+
+.form-control:focus {
+  /*border-color: #8F87F1 !important;*/
+  /*box-shadow: 0 0 0 0.2rem rgba(143, 135, 241, 0.25) !important;*/
+  /*Optional: Adds a subtle shadow;*/
+}
+

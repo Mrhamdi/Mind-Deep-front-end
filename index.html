@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Mind-Deep</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/Features-Cards-icons.css">
+    <link rel="stylesheet" href="assets/css/untitled.css">
+    <style>
+    
+        .movie-card-appear {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+       
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body style="background: var(--bs-gray-100);">
+    <nav class="navbar navbar-expand fixed-top bg-body">
+        <div class="container"><a class="navbar-brand" href="#" style="color: #8F87F1;">Mind-Deep</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav"></ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-4 py-xl-5" style="text-align: left;">
+        <div class="row mb-5" style="margin-top: 86px;">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h2 style="color: #C68EFD;">What Watch ?</h2>
+                <p class="w-lg-50">Find the perfect movie based on your mood</p>
+            </div>
+        </div>
+        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+            <div class="col-md-12 col-lg-5 offset-lg-3 offset-xl-4">
+                <div class="card">
+                    <div class="card-body p-4" style="height: 466.047px;">
+                        <h4 class="text-center card-title">Mind-Deep</h4>
+                        <p class="card-text" style="text-align: center;margin-top: 20px;">Tell us how you’re feeling, and we’ll find the perfect movie for you</p>
+                        <p style="font-weight: bold;margin-top: 26px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-exclamation-lg" style="font-size: 28px;color: #8f87f1;text-shadow: 0px 0px;font-weight: bold;">
+                                <path d="M7.005 3.1a1 1 0 1 1 1.99 0l-.388 6.35a.61.61 0 0 1-1.214 0L7.005 3.1ZM7 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0"></path>
+                            </svg>&nbsp;Example
+                        </p>
+                        <code style="text-align: left;">I’m in such a great mood today , Spent the day with friends playing football</code>
+                        <div class="row">
+                            <div class="col">
+                                <section class="newsletter-subscribe py-4 py-xl-5">
+                                    <div class="container">
+                                        <form class="d-flex justify-content-center flex-wrap" method="post" id="moodForm">
+                                            <div class="mb-3">
+                                                <input class="form-control" id="userPrompt" type="text" placeholder="How are you feeling today ?" style="width: 227px;height: 85px;text-align: left;border-style: solid;border-color: #8f87f1;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <button class="btn ms-2" type="submit" id="submitButton" style="margin-top: 22px;background: #8f87f1;">Send&nbsp;<i class="far fa-paper-plane"></i>&nbsp;</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card movie-card-appear" id="movieCard" style="display:none;">
+                    <div class="card-body" style="text-align: center;">
+                        <img id="movieCover" class="img-fluid" style="width: 172px;" alt="Movie Cover">
+                        <h4 class="card-title" id="movieTitle" style="margin-top: 15px;"></h4>
+                        <p class="card-text" id="movieStory"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center;margin-top: 27px;">Made With&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-heart-fill" style="color: var(--bs-danger);">
+                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"></path>
+            </svg>&nbsp;</p>
+        <footer></footer>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('moodForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const userPrompt = document.getElementById('userPrompt').value;
+
+          
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+
+            try {
+                document.getElementById('movieCard').style.display = 'none';
+                document.getElementById('movieTitle').textContent = '';
+                document.getElementById('movieStory').textContent = '';
+                document.getElementById('movieCover').src = '';
+                const response = await fetch(`http://127.0.0.1:8000/get_movie?user_prompt=${encodeURIComponent(userPrompt)}`);
+                const data = await response.json();
+                if (data) {
+                    document.getElementById('movieTitle').textContent = data.movie_name;
+                    document.getElementById('movieStory').textContent = data.movie_story;
+                    document.getElementById('movieCover').src = data.movie_cover_url;
+                    document.getElementById('movieCard').style.display = 'block';
+                    document.getElementById('movieCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
