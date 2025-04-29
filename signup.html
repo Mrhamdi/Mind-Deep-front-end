@@ -147,7 +147,7 @@
             formData.append('username', username);
             formData.append('password', password);
             // Email is not used in backend, but included for form completeness
-            const response = await fetch('https://mind-deep.onrender.com/signup', {
+            const response = await fetch('https://mind-deep-api.onrender.com/signup', {
                 method: 'POST',
                 body: formData
             });
